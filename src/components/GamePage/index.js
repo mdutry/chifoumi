@@ -8,7 +8,6 @@ import ModalResult from "../ModalResult/index.js";
 import { styles } from './styles.js'
 
 const GamePage = () => {
-    const [openModal, setOpenModal] = useState(false)
     const [gamerPoints, setGamerPoints] = useState(0);
     const [gamerChoice, setGamerChoice] = useState(0);
     const [robotPoints, setRobotPoints] = useState(0);
@@ -17,12 +16,6 @@ const GamePage = () => {
     const [isDisabled, setIsDisabled] = useState(false);
 
     const pseudo = localStorage.getItem('pseudo')
-
-    const showModal = () => {
-        if (gamerChoice != 0 && robotChoice != 0 && result) {
-            setOpenModal(true)
-        }
-    }
 
     const gamerValue = (el) => {
         setIsDisabled(true)
