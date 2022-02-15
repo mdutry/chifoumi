@@ -10,6 +10,7 @@ export const styles = {
         width: "33%",
         height: "50%",
         display: "flex",
+        flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: "lightyellow",
