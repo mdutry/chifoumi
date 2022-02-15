@@ -22,7 +22,6 @@ const GamePage = () => {
         if (gamerChoice != 0 && robotChoice != 0 && result) {
             setOpenModal(true)
         }
-        // setOpenModal(true)
     }
 
     const gamerValue = (el) => {
