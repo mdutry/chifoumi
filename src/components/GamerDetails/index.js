@@ -1,19 +1,23 @@
 import React, { Fragment } from "react";
 import { styles } from './styles'
 
-const GamerDetails = ({ robot, pseudo, points }) => {
+const GamerDetails = ({ robot, pseudo, points, numberOfWinRound }) => {
     const pointsColor = robot ? "#F26659" : "#8CA9D3"
+    let arrayOfWinRound = []
+    for (let index = 1; index <= numberOfWinRound; index++) {
+        arrayOfWinRound.push(index);
+    }
 
     return (
         <div style={styles.container}>
             <p style={styles.pseudo}>{robot ? "Rob Bot" : pseudo}</p>
             <div style={styles.scoreContainer}>
-                <p style={styles.score}>{points} / 3</p>
+                <p style={styles.score}>{points} / {numberOfWinRound}</p>
                 <div style={styles.svgContainer}>
                     {
-                        [1, 2, 3].map((el) => {
+                        arrayOfWinRound.map((el) => {
                             return (
-                                <Fragment key={`id_${el}`}>
+                                <Fragment key={el}>
                                     {
                                         (points >= el)
                                         ? <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill={pointsColor} style={{ width: "2em" }}>

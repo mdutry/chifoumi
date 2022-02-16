@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import CiseauxIcon from "../../svgIcon/CiseauxIcon.js";
 import FeuilleIcon from "../../svgIcon/FeuilleIcon.js";
@@ -11,6 +11,8 @@ import { styles } from './styles.js'
 
 const GamePage = () => {
     const { state } = useLocation();
+    const typeOfGame = parseInt(state.typeOfGame, 10)
+    const numberOfWinRound = parseInt(state.numberOfWinRound, 10)
 
     const [gamerPoints, setGamerPoints] = useState(0);
     const [gamerChoice, setGamerChoice] = useState(0);
@@ -23,11 +25,11 @@ const GamePage = () => {
 
     const gamerValue = (el) => {
         setIsDisabled(true)
-        let robotValue = state.typeOfGame == 1 ? Math.floor(Math.random() * (3 - 1 + 1)) + 1 : state.typeOfGame == 2 ? Math.floor(Math.random() * (4 - 1 + 1)) + 1 : state.typeOfGame == 3 && Math.floor(Math.random() * (5 - 1 + 1)) + 1
+        let robotValue = typeOfGame === 1 ? Math.floor(Math.random() * (3 - 1 + 1)) + 1 : typeOfGame === 2 ? Math.floor(Math.random() * (4 - 1 + 1)) + 1 : typeOfGame === 3 && Math.floor(Math.random() * (5 - 1 + 1)) + 1
         setGamerChoice(el)
         setRobotChoice(robotValue);
 
-        if (state.typeOfGame == 1 || state.typeOfGame == 2) {
+        if (typeOfGame === 1 || typeOfGame === 2) {
             if (el === robotValue) {
                 return setResult("Match nul 🙈🙉🙊")
             } else if ((el === 1 && robotValue === 2) || (el === 2 && robotValue === 3) || (el === 3 && robotValue === 1) || (el === 3 && robotValue === 4) || (el === 1 && robotValue === 4) || (el === 4 && robotValue === 2)) {
@@ -37,7 +39,7 @@ const GamePage = () => {
                 setGamerPoints(gamerPoints + 1)
                 return setResult("Gagné ✌️")
             }
-        } else if  (state.typeOfGame == 3) {
+        } else if  (typeOfGame === 3) {
             console.log("Coucou")
         } 
     }
@@ -51,13 +53,13 @@ const GamePage = () => {
     return (
         <div style={styles.container}>
             <div style={styles.gamerDetails}>
-                <GamerDetails pseudo={pseudo} points={gamerPoints} />
+                <GamerDetails pseudo={pseudo} points={gamerPoints} numberOfWinRound={numberOfWinRound} />
                 <Link to='/' style={styles.homeButton}>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="black" style={{ width: "50%" }}>
                         <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
                     </svg>
                 </Link>
-                <GamerDetails robot points={robotPoints} />
+                <GamerDetails robot points={robotPoints} numberOfWinRound={numberOfWinRound} />
             </div>
             <div style={styles.resultContainer}>
                 <div style={styles.resultDiv}>
@@ -68,9 +70,9 @@ const GamePage = () => {
                         ? <FeuilleIcon />
                         : gamerChoice === 3
                         ? <CiseauxIcon />
-                        : (gamerChoice === 4 && state.typeOfGame == 2)
+                        : (gamerChoice === 4 && typeOfGame === 2)
                         ? <PuitIcon />
-                        : (gamerChoice === 4 && state.typeOfGame == 3)
+                        : (gamerChoice === 4 && typeOfGame === 3)
                         && <LezardIcon />
                     }
                 </div>
@@ -91,9 +93,9 @@ const GamePage = () => {
                         ? <FeuilleIcon />
                         : robotChoice === 3
                         ? <CiseauxIcon />
-                        : (robotChoice === 4 && state.typeOfGame == 2)
+                        : (robotChoice === 4 && typeOfGame === 2)
                         ? <PuitIcon />
-                        : (robotChoice === 4 && state.typeOfGame == 3)
+                        : (robotChoice === 4 && typeOfGame === 3)
                         && <LezardIcon />
                     }
                 </div>
@@ -102,9 +104,9 @@ const GamePage = () => {
                 <button onClick={() => gamerValue(1)} disabled={isDisabled} style={isDisabled ? styles.buttonDisabled : styles.button}>Pierre</button>
                 <button onClick={() => gamerValue(2)} disabled={isDisabled} style={isDisabled ? styles.buttonDisabled : styles.button}>Feuille</button>
                 <button onClick={() => gamerValue(3)} disabled={isDisabled} style={isDisabled ? styles.buttonDisabled : styles.button}>Ciseaux</button>
-                { state.typeOfGame == 2 && <button onClick={() => gamerValue(4)} disabled={isDisabled} style={isDisabled ? styles.buttonDisabled : styles.button}>Puits</button> }
+                { typeOfGame === 2 && <button onClick={() => gamerValue(4)} disabled={isDisabled} style={isDisabled ? styles.buttonDisabled : styles.button}>Puits</button> }
                 {
-                    state.typeOfGame == 3
+                    typeOfGame === 3
                     && <>
                         <button onClick={() => gamerValue(4)} disabled={isDisabled} style={isDisabled ? styles.buttonDisabled : styles.button}>Lézard</button>
                         <button onClick={() => gamerValue(5)} disabled={isDisabled} style={isDisabled ? styles.buttonDisabled : styles.button}>Spok</button>
@@ -112,9 +114,9 @@ const GamePage = () => {
                 }
             </div>
             {
-                gamerPoints === 3
+                (gamerPoints === numberOfWinRound)
                 ? <ModalResult win setGamerPoints={setGamerPoints} setGamerChoice={setGamerChoice} setRobotChoice={setRobotChoice} setRobotPoints={setRobotPoints} setIsDisabled ={setIsDisabled} />
-                : (robotPoints === 3)
+                : (robotPoints === numberOfWinRound)
                 && <ModalResult defeat setGamerPoints={setGamerPoints} setGamerChoice={setGamerChoice} setRobotChoice={setRobotChoice} setRobotPoints={setRobotPoints} setIsDisabled ={setIsDisabled} />
             }
         </div>
