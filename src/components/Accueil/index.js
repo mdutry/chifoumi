@@ -22,7 +22,9 @@ const Accueil = () => {
     }
 
     const handleChangeNumber = (e) => {
-        if (e.target.value > 10) {
+        if (e.target.value < 1) {
+            setWinParty(1)
+        } else if (e.target.value > 10) {
             setWinParty(10)
         } else {
             setWinParty(e.target.value)
@@ -41,7 +43,7 @@ const Accueil = () => {
                         <option value={2} style={styles.options}>+ puit</option>
                         <option value={3} style={styles.options}>+ lézard & Spok</option>
                     </select>
-                    <input style={styles.input} type='number' value={winParty} onChange={(e) => handleChangeNumber(e)} max={10} />
+                    <input style={styles.input} type='number' value={winParty} onChange={(e) => handleChangeNumber(e)} min={1} max={10} />
                     <button style={styles.button} type="submit" disabled={isDisabled}>PLAY &gt;</button>
                 </form>
             </div>
