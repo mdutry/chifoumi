@@ -8,7 +8,7 @@ function App() {
   const appSwitch = (
     <Routes>
       <Route exact path="/" element={<Accueil />} />
-      <Route exact path="/game/:id" fixed element={<GamePage />} />
+      <Route exact path="/game" fixed element={<GamePage />} />
     </Routes>
   );
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import CiseauxIcon from "../../svgIcon/CiseauxIcon.js";
 import FeuilleIcon from "../../svgIcon/FeuilleIcon.js";
 import PierreIcon from "../../svgIcon/PierreIcon.js";
@@ -10,7 +10,7 @@ import ModalResult from "../ModalResult/index.js";
 import { styles } from './styles.js'
 
 const GamePage = () => {
-    const params = useParams()
+    const { state } = useLocation();
 
     const [gamerPoints, setGamerPoints] = useState(0);
     const [gamerChoice, setGamerChoice] = useState(0);
@@ -23,11 +23,11 @@ const GamePage = () => {
 
     const gamerValue = (el) => {
         setIsDisabled(true)
-        let robotValue = params.id == 1 ? Math.floor(Math.random() * (3 - 1 + 1)) + 1 : params.id == 2 ? Math.floor(Math.random() * (4 - 1 + 1)) + 1 : params.id == 3 && Math.floor(Math.random() * (5 - 1 + 1)) + 1
+        let robotValue = state.typeOfGame == 1 ? Math.floor(Math.random() * (3 - 1 + 1)) + 1 : state.typeOfGame == 2 ? Math.floor(Math.random() * (4 - 1 + 1)) + 1 : state.typeOfGame == 3 && Math.floor(Math.random() * (5 - 1 + 1)) + 1
         setGamerChoice(el)
         setRobotChoice(robotValue);
 
-        if (params.id == 1 || params.id == 2) {
+        if (state.typeOfGame == 1 || state.typeOfGame == 2) {
             if (el === robotValue) {
                 return setResult("Match nul 🙈🙉🙊")
             } else if ((el === 1 && robotValue === 2) || (el === 2 && robotValue === 3) || (el === 3 && robotValue === 1) || (el === 3 && robotValue === 4) || (el === 1 && robotValue === 4) || (el === 4 && robotValue === 2)) {
@@ -37,7 +37,7 @@ const GamePage = () => {
                 setGamerPoints(gamerPoints + 1)
                 return setResult("Gagné ✌️")
             }
-        } else if  (params.id == 3) {
+        } else if  (state.typeOfGame == 3) {
             console.log("Coucou")
         } 
     }
@@ -68,9 +68,9 @@ const GamePage = () => {
                         ? <FeuilleIcon />
                         : gamerChoice === 3
                         ? <CiseauxIcon />
-                        : (gamerChoice === 4 && params.id == 2)
+                        : (gamerChoice === 4 && state.typeOfGame == 2)
                         ? <PuitIcon />
-                        : (gamerChoice === 4 && params.id == 3)
+                        : (gamerChoice === 4 && state.typeOfGame == 3)
                         && <LezardIcon />
                     }
                 </div>
@@ -91,9 +91,9 @@ const GamePage = () => {
                         ? <FeuilleIcon />
                         : robotChoice === 3
                         ? <CiseauxIcon />
-                        : (robotChoice === 4 && params.id == 2)
+                        : (robotChoice === 4 && state.typeOfGame == 2)
                         ? <PuitIcon />
-                        : (robotChoice === 4 && params.id == 3)
+                        : (robotChoice === 4 && state.typeOfGame == 3)
                         && <LezardIcon />
                     }
                 </div>
@@ -102,9 +102,9 @@ const GamePage = () => {
                 <button onClick={() => gamerValue(1)} disabled={isDisabled} style={isDisabled ? styles.buttonDisabled : styles.button}>Pierre</button>
                 <button onClick={() => gamerValue(2)} disabled={isDisabled} style={isDisabled ? styles.buttonDisabled : styles.button}>Feuille</button>
                 <button onClick={() => gamerValue(3)} disabled={isDisabled} style={isDisabled ? styles.buttonDisabled : styles.button}>Ciseaux</button>
-                { params.id == 2 && <button onClick={() => gamerValue(4)} disabled={isDisabled} style={isDisabled ? styles.buttonDisabled : styles.button}>Puits</button> }
+                { state.typeOfGame == 2 && <button onClick={() => gamerValue(4)} disabled={isDisabled} style={isDisabled ? styles.buttonDisabled : styles.button}>Puits</button> }
                 {
-                    params.id == 3
+                    state.typeOfGame == 3
                     && <>
                         <button onClick={() => gamerValue(4)} disabled={isDisabled} style={isDisabled ? styles.buttonDisabled : styles.button}>Lézard</button>
                         <button onClick={() => gamerValue(5)} disabled={isDisabled} style={isDisabled ? styles.buttonDisabled : styles.button}>Spok</button>
