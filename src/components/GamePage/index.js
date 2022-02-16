@@ -5,6 +5,7 @@ import FeuilleIcon from "../../svgIcon/FeuilleIcon.js";
 import PierreIcon from "../../svgIcon/PierreIcon.js";
 import PuitIcon from "../../svgIcon/PuitIcon.js";
 import LezardIcon from "../../svgIcon/LezardIcon.js";
+import SpokIcon from "../../svgIcon/SpokIcon.js";
 import GamerDetails from "../GamerDetails/index.js";
 import ModalResult from "../ModalResult/index.js";
 import { styles } from './styles.js'
@@ -40,7 +41,15 @@ const GamePage = () => {
                 return setResult("Gagné ✌️")
             }
         } else if  (typeOfGame === 3) {
-            console.log("Coucou")
+            if (el === robotValue) {
+                return setResult("Match nul 🙈🙉🙊")
+            } else if ((el === 1 && robotValue === 2) || (el === 2 && robotValue === 3) || (el === 3 && robotValue === 1) || (el === 5 && robotValue === 4) || (el === 3 && robotValue === 5) || (el === 4 && robotValue === 1) || (el === 4 && robotValue === 3) || (el === 2 && robotValue === 4) || (el === 5 && robotValue === 2) || (el === 1 && robotValue === 5)) {
+                setRobotPoints(robotPoints + 1)
+                return setResult("Perdu 💩")
+            } else if  ((el === 1 && robotValue === 3) || (el === 2 && robotValue === 1) || (el === 3 && robotValue === 2) || (el === 4 && robotValue === 5) || (el === 5 && robotValue === 3) || (el === 1 && robotValue === 4) || (el === 3 && robotValue === 4) || (el === 4 && robotValue === 2) || (el === 2 && robotValue === 5) || (el === 5 && robotValue === 1)) {
+                setGamerPoints(gamerPoints + 1)
+                return setResult("Gagné ✌️")
+            }
         } 
     }
 
@@ -73,7 +82,9 @@ const GamePage = () => {
                         : (gamerChoice === 4 && typeOfGame === 2)
                         ? <PuitIcon />
                         : (gamerChoice === 4 && typeOfGame === 3)
-                        && <LezardIcon />
+                        ? <LezardIcon />
+                        : (gamerChoice === 5)
+                        && <SpokIcon />
                     }
                 </div>
                 <div style={styles.resultDiv}>
@@ -96,7 +107,9 @@ const GamePage = () => {
                         : (robotChoice === 4 && typeOfGame === 2)
                         ? <PuitIcon />
                         : (robotChoice === 4 && typeOfGame === 3)
-                        && <LezardIcon />
+                        ? <LezardIcon />
+                        : (robotChoice === 5)
+                        && <SpokIcon />
                     }
                 </div>
             </div>
